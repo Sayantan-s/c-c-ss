@@ -1,27 +1,196 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Currency Swap | Switcheo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="style.css" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Fancy Form</title>
+  <body>
+    <div class="container">
+      <div class="swap-card">
+        <div class="card-header">
+          <h1 class="title">Swap</h1>
+          <div class="settings-icon" title="Settings">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M12 1v6m0 6v6m9-9h-6m-6 0H3"></path>
+            </svg>
+          </div>
+        </div>
 
-  <!-- You may add more stuff here -->
-  <link href="style.css" rel="stylesheet" />
-</head>
+        <form id="swap-form" novalidate>
+          <!-- From Currency Section -->
+          <div class="input-group">
+            <div class="input-header">
+              <label for="from-amount">You Pay</label>
+              <div class="balance">
+                Balance: <span id="from-balance">0.00</span>
+              </div>
+            </div>
+            <div class="input-container">
+              <input
+                type="text"
+                id="from-amount"
+                class="amount-input"
+                placeholder="0.0"
+                autocomplete="off"
+                inputmode="decimal"
+              />
+              <button type="button" class="token-select" id="from-token-btn">
+                <div class="token-display">
+                  <div class="token-icon-placeholder">
+                    <span>?</span>
+                  </div>
+                  <span class="token-symbol">Select Token</span>
+                </div>
+                <svg
+                  class="chevron-icon"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                >
+                  <path d="M4 6l4 4 4-4z" />
+                </svg>
+              </button>
+            </div>
+            <div class="error-message" id="from-error"></div>
+          </div>
 
-<body>
+          <!-- Swap Direction Button -->
+          <div class="swap-direction">
+            <button
+              type="button"
+              class="swap-arrow-btn"
+              id="swap-direction-btn"
+              title="Swap Direction"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M7 10l5 5 5-5z" />
+                <path d="M7 14l5-5 5 5z" opacity="0.4" />
+              </svg>
+            </button>
+          </div>
 
-  <!-- You may reorganise the whole HTML, as long as your form achieves the same effect. -->
-  <form onsubmit="return !1">
-    <h5>Swap</h5>
-    <label for="input-amount">Amount to send</label>
-    <input id="input-amount" />
+          <!-- To Currency Section -->
+          <div class="input-group">
+            <div class="input-header">
+              <label for="to-amount">You Receive</label>
+              <div class="balance">
+                Balance: <span id="to-balance">0.00</span>
+              </div>
+            </div>
+            <div class="input-container">
+              <input
+                type="text"
+                id="to-amount"
+                class="amount-input"
+                placeholder="0.0"
+                autocomplete="off"
+                inputmode="decimal"
+                readonly
+              />
+              <button type="button" class="token-select" id="to-token-btn">
+                <div class="token-display">
+                  <div class="token-icon-placeholder">
+                    <span>?</span>
+                  </div>
+                  <span class="token-symbol">Select Token</span>
+                </div>
+                <svg
+                  class="chevron-icon"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                >
+                  <path d="M4 6l4 4 4-4z" />
+                </svg>
+              </button>
+            </div>
+            <div class="error-message" id="to-error"></div>
+          </div>
 
-    <label for="output-amount">Amount to receive</label>
-    <input id="output-amount" />
+          <!-- Exchange Rate Display -->
+          <div class="exchange-rate" id="exchange-rate"></div>
 
-    <button>CONFIRM SWAP</button>
-  </form>
-  <script src="script.js"></script>
-</body>
+          <!-- Submit Button -->
+          <button type="submit" class="submit-btn" id="submit-btn" disabled>
+            Connect Wallet
+          </button>
 
+          <!-- Price Impact Warning -->
+          <div class="warning-message" id="warning-message"></div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Token Selection Modal -->
+    <div class="modal-overlay" id="token-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Select a Token</h2>
+          <button type="button" class="modal-close" id="modal-close">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="search-container">
+          <svg
+            class="search-icon"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="M21 21l-4.35-4.35"></path>
+          </svg>
+          <input
+            type="text"
+            id="token-search"
+            class="token-search-input"
+            placeholder="Search by name or symbol"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="token-list" id="token-list">
+          <div class="loading-spinner">Loading tokens...</div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
 </html>
