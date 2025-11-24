@@ -12,10 +12,15 @@ import { handleSwapDirection } from "../handlers/amountHandlers.js";
 import {
   handleTokenButtonClick,
   handleModalClose,
+  handleTokenSelect,
 } from "../handlers/tokenHandlers.js";
 import { handleTokenSearch } from "../handlers/searchHandlers.js";
 import { handleFormSubmit } from "../handlers/formHandlers.js";
 import { setupSubscriptions } from "./subscriptions.js";
+import {
+  handleTokenListKeyboard,
+  resetKeyboardNavigation,
+} from "../handlers/keyboardHandlers.js";
 
 /**
  * Setup event listeners
@@ -66,10 +71,22 @@ const setupEventListeners = () => {
     swapForm.addEventListener("submit", handleFormSubmit);
   }
 
-  // Keyboard shortcuts
+  // Global keyboard shortcuts and navigation
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && store.getState().modalOpen) {
-      handleModalClose();
+    const state = store.getState();
+
+    // Handle modal keyboard navigation
+    if (state.modalOpen) {
+      // Navigation keys
+      if (["ArrowDown", "ArrowUp", "Enter"].includes(e.key)) {
+        handleTokenListKeyboard(e, handleTokenSelect);
+      }
+
+      // Escape to close
+      if (e.key === "Escape") {
+        handleModalClose();
+        resetKeyboardNavigation();
+      }
     }
   });
 };

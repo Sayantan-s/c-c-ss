@@ -513,10 +513,24 @@ body {
   border-radius: 12px;
   cursor: pointer;
   transition: var(--transition);
+  outline: none;
 }
 
 .token-item:hover {
   background: var(--input-bg);
+}
+
+/* Disable hover when keyboard navigation is active */
+.token-item.keyboard-nav-active:hover {
+  background: transparent;
+}
+
+.token-item:focus,
+.token-item.focused {
+  background: var(--input-bg);
+  border: 1px solid var(--primary-color);
+  margin: -1px;
+  box-shadow: 0 0 0 2px rgba(92, 103, 255, 0.2);
 }
 
 .token-item-icon {

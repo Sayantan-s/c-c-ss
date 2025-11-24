@@ -5,6 +5,7 @@
 
 import { $, addClass, removeClass } from "../utils/dom.js";
 import { formatNumber } from "../utils/helpers.js";
+import { setupHoverTracking } from "../handlers/keyboardHandlers.js";
 
 /**
  * Render token selection button
@@ -64,7 +65,7 @@ export const renderTokenList = (tokens, onTokenSelect) => {
   const html = tokens
     .map(
       (token) => `
-    <div class="token-item" data-symbol="${token.symbol}">
+    <div class="token-item" data-symbol="${token.symbol}" tabindex="-1">
       <img src="${token.iconUrl}" alt="${
         token.symbol
       }" class="token-item-icon" onerror="this.style.display='none';">
@@ -84,6 +85,9 @@ export const renderTokenList = (tokens, onTokenSelect) => {
 
   tokenList.innerHTML = html;
 
+  // Store reference for keyboard navigation
+  tokenList.dataset.onTokenSelect = "handleTokenSelect";
+
   // Add click handlers
   tokenList.querySelectorAll(".token-item").forEach((item) => {
     item.addEventListener("click", () => {
@@ -91,6 +95,9 @@ export const renderTokenList = (tokens, onTokenSelect) => {
       onTokenSelect(symbol);
     });
   });
+
+  // Setup hover tracking for keyboard navigation
+  setupHoverTracking();
 };
 
 /**

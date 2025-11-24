@@ -8,12 +8,14 @@ import { openModal, closeModal, renderTokenList } from "../ui/render.js";
 import { calculateExchangeRate, calculateOutput } from "../domain/exchange.js";
 import { formatNumber } from "../utils/helpers.js";
 import { $, addClass, removeClass } from "../utils/dom.js";
+import { resetKeyboardNavigation } from "./keyboardHandlers.js";
 
 /**
  * Handle token selection button click
  */
 export const handleTokenButtonClick = (selectingFor) => {
   store.setState({ selectingFor, modalOpen: true });
+  resetKeyboardNavigation();
   openModal();
 
   const state = store.getState();
@@ -63,6 +65,7 @@ export const handleTokenSelect = (symbol) => {
 
   store.setState(updates);
   closeModal();
+  resetKeyboardNavigation();
   store.setState({ modalOpen: false, searchQuery: "" });
 
   // Recalculate if both tokens are selected
@@ -100,6 +103,7 @@ export const handleTokenSelect = (symbol) => {
  */
 export const handleModalClose = () => {
   closeModal();
+  resetKeyboardNavigation();
   store.setState({ modalOpen: false, searchQuery: "" });
 };
 
