@@ -158,6 +158,18 @@ body {
   opacity: 0.6;
 }
 
+/* Remove number input spinner arrows */
+.amount-input::-webkit-outer-spin-button,
+.amount-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.amount-input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
 /* Token Select Button */
 .token-select {
   display: flex;
@@ -178,6 +190,13 @@ body {
 .token-select:hover {
   background: var(--primary-bg);
   border-color: var(--primary-color);
+}
+
+.token-select:focus {
+  outline: none;
+  background: var(--primary-bg);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(92, 103, 255, 0.2);
 }
 
 .token-display {

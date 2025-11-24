@@ -8,20 +8,14 @@ import { isValidAmount, parseNumber, formatNumber } from "../utils/helpers.js";
 import { calculateOutput } from "../domain/exchange.js";
 import { showError } from "../ui/render.js";
 import { $, addClass, removeClass } from "../utils/dom.js";
+import { debounce } from "../utils/functional.js";
+import { CONFIG } from "../config/constants.js";
 
 /**
- * Handle from amount input
+ * Calculate and update output amount (debounced)
+ * This is the expensive calculation that should be debounced
  */
-export const handleFromAmountInput = (event) => {
-  const value = event.target.value;
-
-  // Validate input
-  if (value && !isValidAmount(value)) {
-    showError("from-error", "Invalid amount");
-    return;
-  }
-
-  showError("from-error", "");
+const updateOutputAmount = debounce((value) => {
   const state = store.getState();
   const amount = parseNumber(value);
 
@@ -35,6 +29,28 @@ export const handleFromAmountInput = (event) => {
     fromAmount: value,
     toAmount: outputAmount > 0 ? formatNumber(8, outputAmount) : "",
   });
+}, CONFIG.DEBOUNCE_DELAY);
+
+/**
+ * Handle from amount input
+ * Validates immediately but debounces the calculation
+ */
+export const handleFromAmountInput = (event) => {
+  const value = event.target.value;
+
+  // Immediate validation (no debounce for instant feedback)
+  if (value && !isValidAmount(value)) {
+    showError("from-error", "Invalid amount");
+    return;
+  }
+
+  showError("from-error", "");
+
+  // Update fromAmount immediately for responsive input
+  store.setState({ fromAmount: value });
+
+  // Debounce the calculation to avoid unnecessary updates
+  updateOutputAmount(value);
 };
 
 /**
@@ -59,4 +75,3 @@ export const handleSwapDirection = () => {
     exchangeRate: state.exchangeRate > 0 ? 1 / state.exchangeRate : 0,
   });
 };
-

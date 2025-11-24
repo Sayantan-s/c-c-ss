@@ -7,6 +7,7 @@ import { store } from "../store/index.js";
 import { openModal, closeModal, renderTokenList } from "../ui/render.js";
 import { calculateExchangeRate, calculateOutput } from "../domain/exchange.js";
 import { formatNumber } from "../utils/helpers.js";
+import { $, addClass, removeClass } from "../utils/dom.js";
 
 /**
  * Handle token selection button click
@@ -29,6 +30,7 @@ export const handleTokenSelect = (symbol) => {
   if (!token) return;
 
   const updates = {};
+  let shouldOpenOppositeSelector = false;
 
   if (state.selectingFor === "from") {
     updates.fromToken = token;
@@ -38,6 +40,11 @@ export const handleTokenSelect = (symbol) => {
       updates.toToken = null;
       updates.toAmount = "";
     }
+
+    // Auto-open "to" selector if not already selected
+    if (!state.toToken || state.toToken.symbol === symbol) {
+      shouldOpenOppositeSelector = true;
+    }
   } else {
     updates.toToken = token;
 
@@ -46,6 +53,11 @@ export const handleTokenSelect = (symbol) => {
       updates.fromToken = null;
       updates.fromAmount = "";
       updates.toAmount = "";
+    }
+
+    // Auto-open "from" selector if not already selected
+    if (!state.fromToken || state.fromToken.symbol === symbol) {
+      shouldOpenOppositeSelector = true;
     }
   }
 
@@ -64,6 +76,22 @@ export const handleTokenSelect = (symbol) => {
       exchangeRate: rate,
       toAmount: output > 0 ? formatNumber(8, output) : "",
     });
+  } else if (shouldOpenOppositeSelector) {
+    // Focus on the opposite selector button after a short delay
+    setTimeout(() => {
+      const oppositeButtonId =
+        state.selectingFor === "from" ? "to-token-btn" : "from-token-btn";
+      const button = $(oppositeButtonId);
+
+      if (button) {
+        // Add pulse animation to draw attention
+        addClass("pulse", button);
+        button.focus();
+
+        // Remove animation after it completes
+        setTimeout(() => removeClass("pulse", button), 300);
+      }
+    }, 300);
   }
 };
 
