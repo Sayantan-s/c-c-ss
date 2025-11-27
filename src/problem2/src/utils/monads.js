@@ -1,11 +1,3 @@
-/**
- * Functional Monads
- * Result and Maybe monads for functional error handling
- */
-
-/**
- * Result type for error handling (Functional pattern)
- */
 export const Result = {
   Ok: (value) => ({ success: true, value }),
   Err: (error) => ({ success: false, error }),
@@ -16,9 +8,6 @@ export const Result = {
     result.success ? result.value : defaultValue,
 };
 
-/**
- * Maybe type for null handling
- */
 export const Maybe = {
   Just: (value) => ({ hasValue: true, value }),
   Nothing: () => ({ hasValue: false }),

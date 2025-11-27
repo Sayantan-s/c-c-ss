@@ -1,8 +1,3 @@
-/**
- * Application Initialization
- * Bootstrap the application
- */
-
 import { store } from "../store/index.js";
 import { getPrices } from "../services/api.js";
 import { processTokens } from "../domain/token.js";
@@ -22,9 +17,6 @@ import {
   resetKeyboardNavigation,
 } from "../handlers/keyboardHandlers.js";
 
-/**
- * Setup event listeners
- */
 const setupEventListeners = () => {
   const fromInput = $("from-amount");
   const fromButton = $("from-token-btn");
@@ -71,18 +63,14 @@ const setupEventListeners = () => {
     swapForm.addEventListener("submit", handleFormSubmit);
   }
 
-  // Global keyboard shortcuts and navigation
   document.addEventListener("keydown", (e) => {
     const state = store.getState();
 
-    // Handle modal keyboard navigation
     if (state.modalOpen) {
-      // Navigation keys
       if (["ArrowDown", "ArrowUp", "Enter"].includes(e.key)) {
         handleTokenListKeyboard(e, handleTokenSelect);
       }
 
-      // Escape to close
       if (e.key === "Escape") {
         handleModalClose();
         resetKeyboardNavigation();
@@ -91,11 +79,7 @@ const setupEventListeners = () => {
   });
 };
 
-/**
- * Initialize application
- */
 export const init = async () => {
-  // Fetch token prices
   const result = await getPrices();
 
   if (!result.success) {
@@ -103,11 +87,9 @@ export const init = async () => {
     return;
   }
 
-  // Process tokens
   const tokens = processTokens(result.value);
   store.setState({ tokens, loading: false });
 
-  // Setup subscriptions and event listeners
   setupSubscriptions();
   setupEventListeners();
 

@@ -1,15 +1,7 @@
-/**
- * Caching Service
- * Create and manage cache stores
- */
-
 import { deepFreeze } from "../utils/functional.js";
 import { Maybe } from "../utils/monads.js";
 import { CONFIG } from "../config/constants.js";
 
-/**
- * Create a cache store
- */
 export const createCache = () => {
   let cache = null;
   let timestamp = null;

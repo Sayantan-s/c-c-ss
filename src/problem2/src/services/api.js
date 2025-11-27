@@ -1,18 +1,9 @@
-/**
- * API Service
- * Data fetching and caching
- */
-
 import { CONFIG } from "../config/constants.js";
 import { Result } from "../utils/monads.js";
 import { createCache } from "./cache.js";
 
 const priceCache = createCache();
 
-/**
- * Fetch prices from API
- * @returns {Promise<Result>} Result containing prices or error
- */
 export const fetchPrices = async () => {
   try {
     const response = await fetch(CONFIG.API_URL);
@@ -26,10 +17,6 @@ export const fetchPrices = async () => {
   }
 };
 
-/**
- * Get prices with caching
- * @returns {Promise<Result>} Result containing prices
- */
 export const getPrices = async () => {
   const cached = priceCache.get();
   if (cached.hasValue) {

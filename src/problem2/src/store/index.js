@@ -1,11 +1,3 @@
-/**
- * State Management
- * Functional state container with pub-sub pattern
- */
-
-/**
- * Create an immutable state container with pub-sub pattern
- */
 const createStore = (initialState) => {
   let state = { ...initialState };
   const listeners = new Set();
@@ -23,7 +15,6 @@ const createStore = (initialState) => {
   };
 };
 
-// Application State
 export const store = createStore({
   tokens: [],
   fromToken: null,
@@ -32,7 +23,7 @@ export const store = createStore({
   toAmount: "",
   exchangeRate: 0,
   modalOpen: false,
-  selectingFor: null, // 'from' or 'to'
+  selectingFor: null,
   searchQuery: "",
   loading: false,
   error: null,

@@ -1,14 +1,6 @@
-/**
- * Form Event Handlers
- * Handle form submission
- */
-
 import { store } from "../store/index.js";
 import { $$, addClass, removeClass } from "../utils/dom.js";
 
-/**
- * Handle form submit
- */
 export const handleFormSubmit = (event) => {
   event.preventDefault();
 
@@ -24,7 +16,6 @@ export const handleFormSubmit = (event) => {
     return;
   }
 
-  // Simulate swap confirmation
   alert(
     `Swap Confirmed!\n\n` +
       `You pay: ${fromAmount} ${fromToken.symbol}\n` +
@@ -32,4 +23,3 @@ export const handleFormSubmit = (event) => {
       `This is a demo. No actual transaction will occur.`
   );
 };
-

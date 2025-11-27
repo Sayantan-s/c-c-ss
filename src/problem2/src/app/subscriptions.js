@@ -1,8 +1,3 @@
-/**
- * State Subscriptions
- * Subscribe to state changes and update UI
- */
-
 import { store } from "../store/index.js";
 import {
   renderTokenButton,
@@ -11,19 +6,13 @@ import {
 } from "../ui/render.js";
 import { $ } from "../utils/dom.js";
 
-/**
- * Setup state subscriptions
- */
 export const setupSubscriptions = () => {
   store.subscribe((state) => {
-    // Update token buttons
     renderTokenButton("from-token-btn", state.fromToken);
     renderTokenButton("to-token-btn", state.toToken);
 
-    // Update exchange rate display
     renderExchangeRate(state.fromToken, state.toToken, state.exchangeRate);
 
-    // Update amounts
     const fromInput = $("from-amount");
     const toInput = $("to-amount");
 
@@ -35,8 +24,6 @@ export const setupSubscriptions = () => {
       toInput.value = state.toAmount;
     }
 
-    // Update submit button
     updateSubmitButton(state);
   });
 };
-

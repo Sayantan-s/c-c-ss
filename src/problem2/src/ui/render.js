@@ -1,15 +1,7 @@
-/**
- * UI Rendering Functions
- * Side effects for DOM updates
- */
-
 import { $, addClass, removeClass } from "../utils/dom.js";
 import { formatNumber } from "../utils/helpers.js";
 import { setupHoverTracking } from "../handlers/keyboardHandlers.js";
 
-/**
- * Render token selection button
- */
 export const renderTokenButton = (buttonId, token) => {
   const button = $(buttonId);
   if (!button) return;
@@ -30,9 +22,6 @@ export const renderTokenButton = (buttonId, token) => {
   }
 };
 
-/**
- * Render exchange rate display
- */
 export const renderExchangeRate = (fromToken, toToken, rate) => {
   const rateElement = $("exchange-rate");
   if (!rateElement) return;
@@ -46,9 +35,6 @@ export const renderExchangeRate = (fromToken, toToken, rate) => {
   rateElement.textContent = `1 ${fromToken.symbol} = ${formattedRate} ${toToken.symbol}`;
 };
 
-/**
- * Render token list in modal
- */
 export const renderTokenList = (tokens, onTokenSelect) => {
   const tokenList = $("token-list");
   if (!tokenList) return;
@@ -85,10 +71,8 @@ export const renderTokenList = (tokens, onTokenSelect) => {
 
   tokenList.innerHTML = html;
 
-  // Store reference for keyboard navigation
   tokenList.dataset.onTokenSelect = "handleTokenSelect";
 
-  // Add click handlers
   tokenList.querySelectorAll(".token-item").forEach((item) => {
     item.addEventListener("click", () => {
       const symbol = item.dataset.symbol;
@@ -96,13 +80,9 @@ export const renderTokenList = (tokens, onTokenSelect) => {
     });
   });
 
-  // Setup hover tracking for keyboard navigation
   setupHoverTracking();
 };
 
-/**
- * Show/hide error message
- */
 export const showError = (elementId, message) => {
   const element = $(elementId);
   if (!element) return;
@@ -115,9 +95,6 @@ export const showError = (elementId, message) => {
   }
 };
 
-/**
- * Update submit button state
- */
 export const updateSubmitButton = (state) => {
   const button = $("submit-btn");
   if (!button) return;
@@ -137,9 +114,6 @@ export const updateSubmitButton = (state) => {
   }
 };
 
-/**
- * Open modal
- */
 export const openModal = () => {
   const modal = $("token-modal");
   if (modal) {
@@ -148,9 +122,6 @@ export const openModal = () => {
   }
 };
 
-/**
- * Close modal
- */
 export const closeModal = () => {
   const modal = $("token-modal");
   if (modal) {
